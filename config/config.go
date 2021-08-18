@@ -12,6 +12,7 @@ import (
 type Config struct {
 	JWT conf.JWT `mapstructure:"jwt" json:"jwt" yaml:"jwt"` // jwt
 	Zap conf.Zap `mapstructure:"zap" json:"zap" yaml:"zap"`  // logger
+	TcpConfig conf.TcpConfig `mapstructure:"tcp-config" json:"tcpConfig" yaml:"tcp-config"`  // logger
 }
 
 var ConfigHub *Config
@@ -33,6 +34,16 @@ func init(){
 			EncodeLevel:   "LowercaseColorLevelEncoder",
 			StacktraceKey: "stacktrace",
 			LogInConsole:  true,
+		},
+		TcpConfig: conf.TcpConfig{
+			Name:           "pigeon",
+			Ip:             "0.0.0.0",
+			TcpPort:        8999,
+			MaxConn:        3,
+			WorkerPoolSize: 10,
+			MaxWorkerTaskLen: 1024,
+			MaxMsgChanLen:    1024,
+			MaxPacketSize:    4096,
 		},
 	}
 

@@ -13,6 +13,7 @@ import (
 	"sync"
 
 	"github.com/wwengg/arsenal/anet"
+	"github.com/wwengg/arsenal/config"
 )
 
 type TcpConnection struct {
@@ -52,7 +53,7 @@ func NewConnection(server anet.Server, conn *net.TCPConn, connID uint32, msgHand
 		isClosed:    false,
 		MsgHandler:  msgHandler,
 		msgChan:     make(chan []byte),
-		msgBuffChan: make(chan []byte, 100),
+		msgBuffChan: make(chan []byte, config.ConfigHub.TcpConfig.MaxMsgChanLen),
 		property:    nil,
 	}
 
@@ -138,7 +139,7 @@ func (c *TcpConnection) StartReader() {
 				msg:  msg,
 			}
 
-			if 100 > 0 {
+			if config.ConfigHub.TcpConfig.WorkerPoolSize > 0 {
 				//已经启动工作池机制，将消息交给Worker处理
 				c.MsgHandler.SendMsgToTaskQueue(&req)
 			} else {

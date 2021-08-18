@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	"github.com/wwengg/arsenal/anet"
+	"github.com/wwengg/arsenal/config"
 )
 
 type MsgHandle struct {
@@ -22,9 +23,9 @@ type MsgHandle struct {
 func NewMsgHandle() *MsgHandle {
 	return &MsgHandle{
 		Apis:           make(map[uint32]anet.Router),
-		WorkerPoolSize: 500,
+		WorkerPoolSize: uint32(config.ConfigHub.TcpConfig.WorkerPoolSize),
 		//一个worker对应一个queue
-		TaskQueue: make([]chan anet.Request, 10000),
+		TaskQueue: make([]chan anet.Request, config.ConfigHub.TcpConfig.WorkerPoolSize),
 	}
 }
 
@@ -85,7 +86,7 @@ func (mh *MsgHandle) StartWorkerPool() {
 	for i := 0; i < int(mh.WorkerPoolSize); i++ {
 		//一个worker被启动
 		//给当前worker对应的任务队列开辟空间
-		mh.TaskQueue[i] = make(chan anet.Request, 100)
+		mh.TaskQueue[i] = make(chan anet.Request, config.ConfigHub.TcpConfig.MaxWorkerTaskLen)
 		//启动当前Worker，阻塞的等待对应的任务队列是否有消息传递进来
 		go mh.StartOneWorker(i, mh.TaskQueue[i])
 	}

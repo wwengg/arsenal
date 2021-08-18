@@ -9,6 +9,7 @@ import (
 	"net"
 
 	"github.com/wwengg/arsenal/anet"
+	"github.com/wwengg/arsenal/config"
 )
 
 //Server 接口实现，定义一个Server服务类
@@ -40,10 +41,10 @@ func NewServer(opts ...Option) anet.Server {
 	//printLogo()
 
 	s := &TcpServer{
-		Name:       "testName",
+		Name:       config.ConfigHub.TcpConfig.Name,
 		IPVersion:  "tcp4",
-		IP:         "0.0.0.0",
-		Port:       8888,
+		IP:         config.ConfigHub.TcpConfig.Ip,
+		Port:       config.ConfigHub.TcpConfig.TcpPort,
 		msgHandler: NewMsgHandle(),
 		ConnMgr:    NewConnManager(),
 		packet:     NewDataPack(),
