@@ -5,11 +5,11 @@
 package rpcx
 
 import (
-	"github.com/rpcxio/rpcxplus/grpcx"
 	"github.com/smallnest/rpcx/server"
-	"pigeon-logic/service"
+	"go.uber.org/zap"
 
 	"github.com/wwengg/arsenal/config"
+	"github.com/wwengg/arsenal/logger"
 	"github.com/wwengg/arsenal/sdk/rpcx/plugin"
 )
 
@@ -35,5 +35,6 @@ func (s *RpcxServer) RegisterName(name string, rcvr interface{}, metadata string
 }
 
 func (s *RpcxServer) Serve() {
+	logger.ZapLog.Info("rpcxServer Start", zap.String("addr", config.ConfigHub.Rpcx.Addr))
 	s.rpcxServer.Serve(config.ConfigHub.Rpcx.Network, config.ConfigHub.Rpcx.Addr)
 }

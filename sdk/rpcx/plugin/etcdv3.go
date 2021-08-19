@@ -10,6 +10,7 @@ import (
 	"github.com/rcrowley/go-metrics"
 	"github.com/rpcxio/rpcx-etcd/serverplugin"
 	"github.com/smallnest/rpcx/server"
+	"go.uber.org/zap"
 
 	"github.com/wwengg/arsenal/config"
 	"github.com/wwengg/arsenal/logger"
@@ -28,4 +29,5 @@ func AddRegisteryPlugin(s *server.Server) {
 		logger.ZapLog.Error(err.Error())
 	}
 	s.Plugins.Add(r)
+	logger.ZapLog.Info("register etcdv3 start", zap.Any("ServiceAddress", r.ServiceAddress), zap.Any("etcdServers", r.EtcdServers))
 }

@@ -6,7 +6,6 @@ package config
 
 import (
 	"github.com/wwengg/arsenal/config/conf"
-	"github.com/wwengg/arsenal/logger"
 )
 
 type Config struct {
@@ -49,13 +48,10 @@ func init() {
 		},
 		Rpcx: conf.Rpcx{
 			BasePath: "rpcx",
-			Addr:     "0.0.0.0:8889",
+			Addr:     "127.0.0.1:8889",
 			Network:  "tcp",
 			Register: "etcdv3",
 		},
 		EtcdV3: conf.EtcdV3{Addr: []string{"127.0.0.1:23791", "127.0.0.1:23792", "127.0.0.1:23793"}},
 	}
-
-	//	初始化全局日志
-	logger.ZapLog = logger.Zap()
 }

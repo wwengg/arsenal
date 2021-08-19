@@ -1,5 +1,5 @@
-// @Title  
-// @Description  
+// @Title
+// @Description
 // @Author  Wangwengang  2021/8/18 下午10:01
 // @Update  Wangwengang  2021/8/18 下午10:01
 package logger
@@ -16,18 +16,21 @@ import (
 	"github.com/wwengg/arsenal/utils"
 )
 
-
-var (
-	level zapcore.Level
-	ZapLog *zap.Logger
-)
-
-func Reset(){
+func init() {
+	//	初始化全局日志
 	ZapLog = Zap()
 }
 
+var (
+	level  zapcore.Level
+	ZapLog *zap.Logger
+)
 
-func Zap()(logger *zap.Logger){
+func Setup() {
+	ZapLog = Zap()
+}
+
+func Zap() (logger *zap.Logger) {
 	if ok, _ := utils.PathExists(config.ConfigHub.Zap.Director); !ok { // 判断是否有Director文件夹
 		fmt.Printf("create %v directory\n", config.ConfigHub.Zap.Director)
 		_ = os.Mkdir(config.ConfigHub.Zap.Director, os.ModePerm)
@@ -62,7 +65,6 @@ func Zap()(logger *zap.Logger){
 	}
 	return logger
 }
-
 
 // getEncoderConfig 获取zapcore.EncoderConfig
 func getEncoderConfig() (conf zapcore.EncoderConfig) {
@@ -116,6 +118,3 @@ func getEncoderCore() (core zapcore.Core) {
 func CustomTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format(config.ConfigHub.Zap.Prefix + "2006/01/02 - 15:04:05.000"))
 }
-
-
-
