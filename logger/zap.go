@@ -22,6 +22,10 @@ var (
 	ZapLog *zap.Logger
 )
 
+func Reset(){
+	ZapLog = Zap()
+}
+
 
 func Zap()(logger *zap.Logger){
 	if ok, _ := utils.PathExists(config.ConfigHub.Zap.Director); !ok { // 判断是否有Director文件夹
