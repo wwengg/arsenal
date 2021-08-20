@@ -1,8 +1,8 @@
-// @Title  
-// @Description  
+// @Title
+// @Description
 // @Author  Wangwengang  2021/8/17 下午5:18
 // @Update  Wangwengang  2021/8/17 下午5:18
-package internal
+package impl
 
 import (
 	"fmt"
@@ -14,10 +14,9 @@ import (
 
 type MsgHandle struct {
 	Apis           map[uint32]anet.Router //存放每个MsgID 所对应的处理方法的map属性
-	WorkerPoolSize uint32                    //业务工作Worker池的数量
+	WorkerPoolSize uint32                 //业务工作Worker池的数量
 	TaskQueue      []chan anet.Request    //Worker负责取任务的消息队列
 }
-
 
 //NewMsgHandle 创建MsgHandle
 func NewMsgHandle() *MsgHandle {
@@ -28,7 +27,6 @@ func NewMsgHandle() *MsgHandle {
 		TaskQueue: make([]chan anet.Request, config.ConfigHub.TcpConfig.WorkerPoolSize),
 	}
 }
-
 
 //SendMsgToTaskQueue 将消息交给TaskQueue,由worker进行处理
 func (mh *MsgHandle) SendMsgToTaskQueue(request anet.Request) {

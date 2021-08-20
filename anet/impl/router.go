@@ -1,8 +1,8 @@
-// @Title  
-// @Description  
+// @Title
+// @Description
 // @Author  Wangwengang  2021/8/17 下午9:55
 // @Update  Wangwengang  2021/8/17 下午9:55
-package internal
+package impl
 
 /*
 	路由接口， 这里面路由是 使用框架者给该链接自定的 处理业务方法
@@ -13,4 +13,3 @@ type IRouter interface {
 	Handle(request Request)     //处理conn业务的方法
 	PostHandle(request Request) //处理conn业务之后的钩子方法
 }
-

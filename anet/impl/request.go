@@ -1,8 +1,8 @@
-// @Title  
-// @Description  
+// @Title
+// @Description
 // @Author  Wangwengang  2021/8/17 下午9:54
 // @Update  Wangwengang  2021/8/17 下午9:54
-package internal
+package impl
 
 import (
 	"github.com/wwengg/arsenal/anet"
@@ -28,4 +28,3 @@ func (r *Request) GetData() []byte {
 func (r *Request) GetMsgID() uint32 {
 	return r.msg.GetMsgID()
 }
-

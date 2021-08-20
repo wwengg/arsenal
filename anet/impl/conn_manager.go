@@ -1,8 +1,8 @@
-// @Title  
-// @Description  
+// @Title
+// @Description
 // @Author  Wangwengang  2021/8/17 下午5:21
 // @Update  Wangwengang  2021/8/17 下午5:21
-package internal
+package impl
 
 import (
 	"errors"

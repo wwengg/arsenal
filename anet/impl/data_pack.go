@@ -1,12 +1,13 @@
-// @Title  
-// @Description  
+// @Title
+// @Description
 // @Author  Wangwengang  2021/8/17 下午5:25
 // @Update  Wangwengang  2021/8/17 下午5:25
-package internal
+package impl
 
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 
 	"github.com/wwengg/arsenal/anet"
 	"github.com/wwengg/arsenal/config"
@@ -77,4 +78,3 @@ func (dp *DataPack) Unpack(binaryData []byte) (anet.Message, error) {
 	//这里只需要把head的数据拆包出来就可以了，然后再通过head的长度，再从conn读取一次数据
 	return msg, nil
 }
-

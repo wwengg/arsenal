@@ -1,8 +1,8 @@
-// @Title  
-// @Description  
+// @Title
+// @Description
 // @Author  Wangwengang  2021/8/17 下午5:11
 // @Update  Wangwengang  2021/8/17 下午5:11
-package internal
+package impl
 
 import (
 	"github.com/wwengg/arsenal/anet"
@@ -16,4 +16,3 @@ func WithPacket(pack anet.Packet) Option {
 		s.packet = pack
 	}
 }
-

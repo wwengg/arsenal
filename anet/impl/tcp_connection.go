@@ -1,8 +1,8 @@
-// @Title  
-// @Description  
+// @Title
+// @Description
 // @Author  Wangwengang  2021/8/17 下午4:45
 // @Update  Wangwengang  2021/8/17 下午4:45
-package internal
+package impl
 
 import (
 	"context"
@@ -42,9 +42,8 @@ type TcpConnection struct {
 	isClosed bool
 }
 
-
 //NewConnection 创建连接的方法
-func NewConnection(server anet.Server, conn *net.TCPConn, connID uint32, msgHandler anet.MsgHandle) *TcpConnection {
+func NewConnection(server anet.Server, conn *net.TCPConn, connID uint32, msgHandler anet.MsgHandle) anet.Connection {
 	//初始化Conn属性
 	c := &TcpConnection{
 		TCPServer:   server,
@@ -61,7 +60,6 @@ func NewConnection(server anet.Server, conn *net.TCPConn, connID uint32, msgHand
 	c.TCPServer.GetConnMgr().Add(c)
 	return c
 }
-
 
 //StartWriter 写消息Goroutine， 用户将数据发送给客户端
 func (c *TcpConnection) StartWriter() {
@@ -192,7 +190,7 @@ func (c *TcpConnection) Stop() {
 }
 
 //GetTCPConnection 从当前连接获取原始的socket TCPConn
-func (c *TcpConnection) GetTCPConnection() *net.TCPConn {
+func (c *TcpConnection) GetConnection() *net.TCPConn {
 	return c.Conn
 }
 

@@ -1,8 +1,8 @@
-// @Title  
-// @Description  
+// @Title
+// @Description
 // @Author  Wangwengang  2021/8/17 下午5:26
 // @Update  Wangwengang  2021/8/17 下午5:26
-package internal
+package impl
 
 //Message 消息
 type Message struct {
@@ -49,4 +49,3 @@ func (msg *Message) SetMsgID(msgID uint32) {
 func (msg *Message) SetData(data []byte) {
 	msg.Data = data
 }
-

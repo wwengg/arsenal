@@ -7,7 +7,7 @@ package conf
 type TcpConfig struct {
 	Name			string	`mapstructure:"name" json:"name" yaml:"name"`                         // serverName
 	Ip           	string `mapstructure:"ip" json:"ip" yaml:"ip"`                                // ip
-	TcpPort         int    `mapstructure:"port" json:"port" yaml:"port"`                          // 端口值
+	TcpPort         int    `mapstructure:"tcp-port" json:"tcp-port" yaml:"tcp-port"`                          // 端口值
 	MaxConn			int	   `mapstructure:"max-conn" json:"maxConn" yaml:"max-conn"`               // 最大连接数
 	WorkerPoolSize	uint32	   `mapstructure:"worker-pool-size" json:"workerPoolSize" yaml:"worker-pool-size"`    // 工作池数量
 	MaxWorkerTaskLen uint32	`mapstructure:"max-worker-task-len" json:"maxWorkerTaskLen" yaml:"max-worker-task-len"`
