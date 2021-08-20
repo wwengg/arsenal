@@ -6,17 +6,20 @@ package impl
 
 import "C"
 import (
+	"context"
 	"fmt"
 	"net"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
+	"github.com/wwengg/proto/identity"
 	"go.uber.org/zap"
 
 	"github.com/wwengg/arsenal/anet"
 	"github.com/wwengg/arsenal/config"
 	"github.com/wwengg/arsenal/logger"
+	"github.com/wwengg/arsenal/sdk/rpcx"
 )
 
 //Server 接口实现，定义一个Server服务类
@@ -41,11 +44,18 @@ type Server struct {
 	OnConnStop func(conn anet.Connection)
 
 	packet anet.Packet
+
+	identityClient  *identity.IdentityClient
 }
 
 //NewServer 创建一个服务器句柄
 func NewServer(opts ...Option) anet.Server {
 	//printLogo()
+	xclient,err := rpcx.RpcxClientsObj.GetXClient("identity")
+	if err != nil {
+		logger.ZapLog.Error("identity service not found")
+		panic(err)
+	}
 
 	s := &Server{
 		Name:       config.ConfigHub.TcpConfig.Name,
@@ -56,6 +66,7 @@ func NewServer(opts ...Option) anet.Server {
 		msgHandler: NewMsgHandle(),
 		ConnMgr:    NewConnManager(),
 		packet:     NewDataPack(),
+		identityClient: identity.NewIdentityClient(xclient),
 	}
 
 	for _, opt := range opts {
@@ -65,7 +76,15 @@ func NewServer(opts ...Option) anet.Server {
 	return s
 }
 
-//============== 实现 ziface.IServer 里的全部接口方法 ========
+func (s *Server) GenID() uint64{
+	reply,err := s.identityClient.GetId(context.Background(),nil)
+	if err != nil {
+		return 0
+	}
+	return uint64(reply.Id)
+}
+
+//============== 实现 anet.Server 里的全部接口方法 ========
 
 //Start 开启Tcp网络服务
 func (s *Server) StartTcp() {
@@ -93,8 +112,9 @@ func (s *Server) StartTcp() {
 		fmt.Println("start Zinx server  ", s.Name, " succ, now listenning...")
 
 		//TODO server.go 应该有一个自动生成ID的方法
-		var cID uint32
-		cID = 0
+
+
+
 
 		//3 启动server网络连接业务
 		for {
@@ -113,8 +133,7 @@ func (s *Server) StartTcp() {
 			}
 
 			//3.3 处理该新连接请求的 业务 方法， 此时应该有 handler 和 conn是绑定的
-			dealConn := NewConnection(s, conn, cID, s.msgHandler)
-			cID++
+			dealConn := NewConnection(s, conn, s.GenID(), s.msgHandler)
 
 			//3.4 启动当前链接的处理业务
 			go dealConn.Start()
@@ -162,9 +181,6 @@ func (h *WsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		logger.ZapLog.Error("upgrade error", zap.Error(err))
 		return
 	}
-	//TODO server.go 应该有一个自动生成ID的方法
-	var cID uint32
-	cID = 0
 
 	//3.2 设置服务器最大连接控制,如果超过最大连接，那么则关闭此新的连接
 	if h.sv.ConnMgr.Len() >= 100 {
@@ -172,7 +188,7 @@ func (h *WsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//3.3 处理该新连接请求的 业务 方法， 此时应该有 handler 和 conn是绑定的
-	dealConn := NewWsConnection(h.sv, conn, cID, h.sv.msgHandler)
+	dealConn := NewWsConnection(h.sv, conn, h.sv.GenID(), h.sv.msgHandler)
 
 	//3.4 启动当前链接的处理业务
 	go dealConn.Start()

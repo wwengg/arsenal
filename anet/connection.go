@@ -18,7 +18,7 @@ type Connection interface {
 
 	GetTcpConnection() *net.TCPConn   //从当前连接获取原始的socket TCPConn
 	GetWsConnection() *websocket.Conn // 从当前连接获取原始的websocket Conn
-	GetConnID() uint32                //获取当前连接ID
+	GetConnID() uint64                //获取当前连接ID
 	RemoteAddr() net.Addr             //获取远程客户端地址信息
 
 	SendMsg(msgID uint32, data []byte) error     //直接将Message数据发送数据给远程的TCP客户端(无缓冲)

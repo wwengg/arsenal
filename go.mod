@@ -13,4 +13,10 @@ require (
 	github.com/spf13/viper v1.7.0
 	go.uber.org/zap v1.19.0
 	google.golang.org/grpc/examples v0.0.0-20210818220435-8ab16ef276a3 // indirect
+	github.com/wwengg/proto v0.0.0
+)
+
+
+replace (
+	github.com/wwengg/proto => ../proto
 )

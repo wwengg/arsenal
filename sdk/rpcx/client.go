@@ -40,6 +40,18 @@ func init() {
 	}
 }
 
+func (rc *RpcxClients) SetFailMode(mode client.FailMode){
+	rc.FailMode = mode
+}
+
+func (rc *RpcxClients) SetSelectMode(selectMode client.SelectMode){
+	rc.SelectMode = selectMode
+}
+
+func (rc *RpcxClients) SetOption(option client.Option){
+	rc.Option = option
+}
+
 func (rc *RpcxClients) SetupServiceDiscovery() {
 	var err error
 	rc.ServiceDiscovery, err = etcdclient.NewEtcdV3DiscoveryTemplate("yf", config.ConfigHub.EtcdV3.Addr, true, nil)

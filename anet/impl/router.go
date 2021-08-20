@@ -4,12 +4,22 @@
 // @Update  Wangwengang  2021/8/17 下午9:55
 package impl
 
-/*
-	路由接口， 这里面路由是 使用框架者给该链接自定的 处理业务方法
-	路由里的IRequest 则包含用该链接的链接信息和该链接的请求数据信息
-*/
-type IRouter interface {
-	PreHandle(request Request)  //在处理conn业务之前的钩子方法
-	Handle(request Request)     //处理conn业务的方法
-	PostHandle(request Request) //处理conn业务之后的钩子方法
-}
+import (
+	"github.com/wwengg/arsenal/anet"
+)
+
+//BaseRouter 实现router时，先嵌入这个基类，然后根据需要对这个基类的方法进行重写
+type BaseRouter struct{}
+
+//这里之所以BaseRouter的方法都为空，
+// 是因为有的Router不希望有PreHandle或PostHandle
+// 所以Router全部继承BaseRouter的好处是，不需要实现PreHandle和PostHandle也可以实例化
+
+//PreHandle -
+func (br *BaseRouter) PreHandle(req anet.Request) {}
+
+//Handle -
+func (br *BaseRouter) Handle(req anet.Request) {}
+
+//PostHandle -
+func (br *BaseRouter) PostHandle(req anet.Request) {}

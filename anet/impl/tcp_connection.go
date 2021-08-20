@@ -12,6 +12,8 @@ import (
 	"net"
 	"sync"
 
+	"github.com/gorilla/websocket"
+
 	"github.com/wwengg/arsenal/anet"
 	"github.com/wwengg/arsenal/config"
 )
@@ -22,7 +24,7 @@ type TcpConnection struct {
 	//当前连接的socket TCP套接字
 	Conn *net.TCPConn
 	//当前连接的ID 也可以称作为SessionID，ID全局唯一
-	ConnID uint32
+	ConnID uint64
 	//消息管理MsgID和对应处理方法的消息管理模块
 	MsgHandler anet.MsgHandle
 	//告知该链接已经退出/停止的channel
@@ -43,7 +45,7 @@ type TcpConnection struct {
 }
 
 //NewConnection 创建连接的方法
-func NewConnection(server anet.Server, conn *net.TCPConn, connID uint32, msgHandler anet.MsgHandle) anet.Connection {
+func NewConnection(server anet.Server, conn *net.TCPConn, connID uint64, msgHandler anet.MsgHandle) anet.Connection {
 	//初始化Conn属性
 	c := &TcpConnection{
 		TCPServer:   server,
@@ -190,12 +192,17 @@ func (c *TcpConnection) Stop() {
 }
 
 //GetTCPConnection 从当前连接获取原始的socket TCPConn
-func (c *TcpConnection) GetConnection() *net.TCPConn {
+func (c *TcpConnection) GetTcpConnection() *net.TCPConn {
 	return c.Conn
 }
 
+//GetTCPConnection 从当前连接获取原始的socket TCPConn
+func (c *TcpConnection) GetWsConnection() *websocket.Conn {
+	return nil
+}
+
 //GetConnID 获取当前连接ID
-func (c *TcpConnection) GetConnID() uint32 {
+func (c *TcpConnection) GetConnID() uint64 {
 	return c.ConnID
 }
 

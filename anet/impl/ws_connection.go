@@ -24,7 +24,7 @@ type WsConnection struct {
 	//当前连接的socket TCP套接字
 	Conn *websocket.Conn
 	//当前连接的ID 也可以称作为SessionID，ID全局唯一
-	ConnID uint32
+	ConnID uint64
 	//消息管理MsgID和对应处理方法的消息管理模块
 	MsgHandler anet.MsgHandle
 	//告知该链接已经退出/停止的channel
@@ -45,7 +45,7 @@ type WsConnection struct {
 }
 
 //NewConnection 创建连接的方法
-func NewWsConnection(server anet.Server, conn *websocket.Conn, connID uint32, msgHandler anet.MsgHandle) anet.Connection {
+func NewWsConnection(server anet.Server, conn *websocket.Conn, connID uint64, msgHandler anet.MsgHandle) anet.Connection {
 	//初始化Conn属性
 	c := &WsConnection{
 		TCPServer:   server,
@@ -213,7 +213,7 @@ func (c *WsConnection) GetWsConnection() *websocket.Conn {
 }
 
 //GetConnID 获取当前连接ID
-func (c *WsConnection) GetConnID() uint32 {
+func (c *WsConnection) GetConnID() uint64 {
 	return c.ConnID
 }
 

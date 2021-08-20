@@ -13,7 +13,7 @@ import (
 	"github.com/wwengg/arsenal/config"
 )
 
-var defaultHeaderLen uint32 = 8
+var defaultHeaderLen uint32 = 16
 
 //DataPack 封包拆包类实例，暂时不需要成员
 type DataPack struct{}
@@ -25,7 +25,7 @@ func NewDataPack() anet.Packet {
 
 //GetHeadLen 获取包头长度方法
 func (dp *DataPack) GetHeadLen() uint32 {
-	//ID uint32(4字节) +  DataLen uint32(4字节)
+	//DataLen uint32(4字节) +  Op uint32(4字节) +  ver uint32(4字节) +  seq uint32(4字节)
 	return defaultHeaderLen
 }
 
@@ -41,6 +41,16 @@ func (dp *DataPack) Pack(msg anet.Message) ([]byte, error) {
 
 	//写msgID
 	if err := binary.Write(dataBuff, binary.LittleEndian, msg.GetMsgID()); err != nil {
+		return nil, err
+	}
+
+	// 写版本ID
+	if err := binary.Write(dataBuff, binary.LittleEndian, msg.GetVer()); err != nil {
+		return nil, err
+	}
+
+	// 写包ID
+	if err := binary.Write(dataBuff, binary.LittleEndian, msg.GetSeq()); err != nil {
 		return nil, err
 	}
 
@@ -66,9 +76,20 @@ func (dp *DataPack) Unpack(binaryData []byte) (anet.Message, error) {
 	}
 
 	//读msgID
-	if err := binary.Read(dataBuff, binary.LittleEndian, &msg.ID); err != nil {
+	if err := binary.Read(dataBuff, binary.LittleEndian, &msg.Op); err != nil {
 		return nil, err
 	}
+
+	//读Ver
+	if err := binary.Read(dataBuff, binary.LittleEndian, &msg.Ver); err != nil {
+		return nil, err
+	}
+
+	//读Seq
+	if err := binary.Read(dataBuff, binary.LittleEndian, &msg.Seq); err != nil {
+		return nil, err
+	}
+
 
 	//判断dataLen的长度是否超出我们允许的最大包长度
 	if config.ConfigHub.TcpConfig.MaxPacketSize > 0 && msg.DataLen > config.ConfigHub.TcpConfig.MaxPacketSize {
