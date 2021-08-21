@@ -66,7 +66,7 @@ func Viper(path ...string) *viper.Viper {
 		}
 		// use -prefix
 		if prefix != "" {
-			ConfigHub.Zap.Prefix = prefix
+			ConfigHub.Zap.Prefix = fmt.Sprintf("[%s]",prefix)
 		}
 	})
 	if err := v.Unmarshal(&ConfigHub); err != nil {
@@ -78,7 +78,7 @@ func Viper(path ...string) *viper.Viper {
 	}
 	// use -prefix
 	if prefix != "" {
-		ConfigHub.Zap.Prefix = prefix
+		ConfigHub.Zap.Prefix = fmt.Sprintf("[%s]",prefix)
 	}
 
 	return v
