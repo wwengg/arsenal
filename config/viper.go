@@ -15,6 +15,7 @@ import (
 
 var config string
 var addr string
+var prefix string
 
 const (
 	ConfigEnv  = "X_CONFIG"
@@ -24,6 +25,7 @@ const (
 func init() {
 	flag.StringVar(&config, "c", "", "choose config file.")
 	flag.StringVar(&addr, "addr", "", "server listened address")
+	flag.StringVar(&prefix, "prefix", "", "server prefix")
 }
 
 func Viper(path ...string) *viper.Viper {
@@ -58,6 +60,14 @@ func Viper(path ...string) *viper.Viper {
 		if err := v.Unmarshal(&config); err != nil {
 			fmt.Println(err)
 		}
+		// use -addr
+		if addr != "" {
+			ConfigHub.Rpcx.Addr = addr
+		}
+		// use -prefix
+		if prefix != "" {
+			ConfigHub.Zap.Prefix = prefix
+		}
 	})
 	if err := v.Unmarshal(&ConfigHub); err != nil {
 		fmt.Println(err)
@@ -65,6 +75,10 @@ func Viper(path ...string) *viper.Viper {
 	// use -addr
 	if addr != "" {
 		ConfigHub.Rpcx.Addr = addr
+	}
+	// use -prefix
+	if prefix != "" {
+		ConfigHub.Zap.Prefix = prefix
 	}
 
 	return v

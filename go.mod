@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/fsnotify/fsnotify v1.4.9
+	github.com/gorilla/websocket v1.4.2
 	github.com/jonboulle/clockwork v0.2.2 // indirect
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/lestrrat-go/strftime v1.0.5 // indirect
@@ -11,12 +12,9 @@ require (
 	github.com/rpcxio/rpcx-etcd v0.0.0-20210606082724-1a5593db7a0d
 	github.com/smallnest/rpcx v1.6.9
 	github.com/spf13/viper v1.7.0
+	github.com/wwengg/proto v0.0.0-20210821031700-75b2f457e200
 	go.uber.org/zap v1.19.0
 	google.golang.org/grpc/examples v0.0.0-20210818220435-8ab16ef276a3 // indirect
-	github.com/wwengg/proto v0.0.0
 )
 
-
-replace (
-	github.com/wwengg/proto => ../proto
-)
+// replace github.com/wwengg/proto => ../proto
