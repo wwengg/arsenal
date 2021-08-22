@@ -45,27 +45,27 @@ type Server struct {
 
 	packet anet.Packet
 
-	identityClient  *identity.IdentityClient
+	identityClient *identity.IdentityClient
 }
 
 //NewServer 创建一个服务器句柄
 func NewServer(opts ...Option) anet.Server {
 	//printLogo()
-	xclient,err := rpcx.RpcxClientsObj.GetXClient("identity")
+	xclient, err := rpcx.RpcxClientsObj.GetXClient("identity")
 	if err != nil {
 		logger.ZapLog.Error("identity service not found")
 		panic(err)
 	}
 
 	s := &Server{
-		Name:       config.ConfigHub.TcpConfig.Name,
-		IPVersion:  "tcp4",
-		IP:         config.ConfigHub.TcpConfig.Ip,
-		Port:       config.ConfigHub.TcpConfig.TcpPort,
-		WsAddr:     config.ConfigHub.Websocket.Addr,
-		msgHandler: NewMsgHandle(),
-		ConnMgr:    NewConnManager(),
-		packet:     NewDataPack(),
+		Name:           config.ConfigHub.TcpConfig.Name,
+		IPVersion:      "tcp4",
+		IP:             config.ConfigHub.TcpConfig.Ip,
+		Port:           config.ConfigHub.TcpConfig.TcpPort,
+		WsAddr:         config.ConfigHub.Websocket.Addr,
+		msgHandler:     NewMsgHandle(),
+		ConnMgr:        NewConnManager(),
+		packet:         NewDataPack(),
 		identityClient: identity.NewIdentityClient(xclient),
 	}
 
@@ -76,8 +76,8 @@ func NewServer(opts ...Option) anet.Server {
 	return s
 }
 
-func (s *Server) GenID() uint64{
-	reply,err := s.identityClient.GetId(context.Background(),nil)
+func (s *Server) GenID() uint64 {
+	reply, err := s.identityClient.GetId(context.Background(), nil)
 	if err != nil {
 		return 0
 	}
@@ -112,9 +112,6 @@ func (s *Server) StartTcp() {
 		fmt.Println("start Zinx server  ", s.Name, " succ, now listenning...")
 
 		//TODO server.go 应该有一个自动生成ID的方法
-
-
-
 
 		//3 启动server网络连接业务
 		for {
@@ -159,9 +156,9 @@ func (s *Server) StartWebsocket() {
 			EnableCompression: false,
 		},
 			sv: s},
-		ReadTimeout:    time.Second * time.Duration(C.ConnReadTimeout),
-		WriteTimeout:   time.Second * time.Duration(C.ConnWriteTimeout),
-		MaxHeaderBytes: C.MaxHeaderLen,
+		ReadTimeout:    time.Second * time.Duration(config.ConfigHub.Websocket.ConnReadTimeout),
+		WriteTimeout:   time.Second * time.Duration(config.ConfigHub.Websocket.ConnWriteTimeout),
+		MaxHeaderBytes: config.ConfigHub.Websocket.MaxHeaderLen,
 	}
 	httpServer.ListenAndServe()
 }

@@ -14,7 +14,7 @@ type Config struct {
 	TcpConfig conf.TcpConfig `mapstructure:"tcp-config" json:"tcpConfig" yaml:"tcp-config"` // logger
 	Rpcx      conf.Rpcx      `mapstructure:"rpcx" json:"rpcx" yaml:"rpcx"`
 	EtcdV3    conf.EtcdV3    `mapstructure:"etcd-v3" json:"etcdV3" yaml:"etcd-v3"`
-	Websocket conf.Websocket   `mapstructure:"websocket" json:"websocket" yaml:"websocket"`
+	Websocket conf.Websocket `mapstructure:"websocket" json:"websocket" yaml:"websocket"`
 }
 
 var ConfigHub *Config
@@ -54,5 +54,12 @@ func init() {
 			Register: "etcdv3",
 		},
 		EtcdV3: conf.EtcdV3{Addr: []string{"127.0.0.1:23791", "127.0.0.1:23792", "127.0.0.1:23793"}},
+		Websocket: conf.Websocket{
+			Enable:           false,
+			Addr:             "",
+			ConnWriteTimeout: 0,
+			ConnReadTimeout:  0,
+			MaxHeaderLen:     0,
+		},
 	}
 }
