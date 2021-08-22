@@ -4,7 +4,6 @@
 // @Update  Wangwengang  2021/8/17 下午5:08
 package impl
 
-import "C"
 import (
 	"context"
 	"fmt"
