@@ -51,6 +51,7 @@ type Server struct {
 //NewServer 创建一个服务器句柄
 func NewServer(opts ...Option) anet.Server {
 	//printLogo()
+	rpcx.RpcxClientsObj.SetupServiceDiscovery()
 	xclient, err := rpcx.RpcxClientsObj.GetXClient("identity")
 	if err != nil {
 		logger.ZapLog.Error("identity service not found")

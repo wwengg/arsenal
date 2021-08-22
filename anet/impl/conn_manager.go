@@ -13,14 +13,14 @@ import (
 )
 
 type ConnManager struct {
-	connections map[uint32]anet.Connection
+	connections map[uint64]anet.Connection
 	connLock    sync.RWMutex
 }
 
 //NewConnManager 创建一个链接管理
 func NewConnManager() *ConnManager {
 	return &ConnManager{
-		connections: make(map[uint32]anet.Connection),
+		connections: make(map[uint64]anet.Connection),
 	}
 }
 
@@ -46,7 +46,7 @@ func (connMgr *ConnManager) Remove(conn anet.Connection) {
 }
 
 //Get 利用ConnID获取链接
-func (connMgr *ConnManager) Get(connID uint32) (anet.Connection, error) {
+func (connMgr *ConnManager) Get(connID uint64) (anet.Connection, error) {
 	connMgr.connLock.RLock()
 	defer connMgr.connLock.RUnlock()
 
@@ -82,7 +82,7 @@ func (connMgr *ConnManager) ClearConn() {
 }
 
 //ClearOneConn  利用ConnID获取一个链接 并且删除
-func (connMgr *ConnManager) ClearOneConn(connID uint32) {
+func (connMgr *ConnManager) ClearOneConn(connID uint64) {
 	connMgr.connLock.Lock()
 	defer connMgr.connLock.Unlock()
 
