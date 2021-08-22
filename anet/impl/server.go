@@ -55,7 +55,6 @@ func NewServer(opts ...Option) anet.Server {
 	xclient, err := rpcx.RpcxClientsObj.GetXClient("identity")
 	if err != nil {
 		logger.ZapLog.Error("identity service not found")
-		panic(err)
 	}
 
 	s := &Server{
