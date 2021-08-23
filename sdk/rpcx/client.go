@@ -54,7 +54,7 @@ func (rc *RpcxClients) SetOption(option client.Option){
 
 func (rc *RpcxClients) SetupServiceDiscovery() {
 	var err error
-	rc.ServiceDiscovery, err = etcdclient.NewEtcdV3DiscoveryTemplate("yf", config.ConfigHub.EtcdV3.Addr, true, nil)
+	rc.ServiceDiscovery, err = etcdclient.NewEtcdV3DiscoveryTemplate(config.ConfigHub.Rpcx.BasePath, config.ConfigHub.EtcdV3.Addr, true, nil)
 	if err != nil {
 		logger.ZapLog.Panic(err.Error())
 		panic(err)

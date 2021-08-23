@@ -51,9 +51,9 @@ type Server struct {
 func NewServer(opts ...Option) anet.Server {
 	//printLogo()
 	rpcx.RpcxClientsObj.SetupServiceDiscovery()
-	xclient, err := rpcx.RpcxClientsObj.GetXClient("identity")
+	xclient, err := rpcx.RpcxClientsObj.GetXClient("Identity")
 	if err != nil {
-		logger.ZapLog.Error("identity service not found")
+		logger.ZapLog.Error("Identity service not found")
 	}
 
 	s := &Server{
