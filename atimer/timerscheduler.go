@@ -83,7 +83,7 @@ func (ts *TimerScheduler) CreateTimerAfter(df *DelayFunc, duration time.Duration
 //CancelTimer 删除timer
 func (ts *TimerScheduler) CancelTimer(tID uint32) {
 	ts.Lock()
-	ts.Unlock()
+	defer ts.Unlock()
 	//ts.tw.RemoveTimer(tID)  这个方法无效
 	//删除timerID
 	var index = -1

@@ -1,5 +1,5 @@
-// @Title  
-// @Description  
+// @Title
+// @Description
 // @Author  Wangwengang  2021/8/17 下午5:15
 // @Update  Wangwengang  2021/8/17 下午5:15
 package anet
@@ -14,3 +14,6 @@ type Router interface {
 	PostHandle(request Request) //处理conn业务之后的钩子方法
 }
 
+type RpcxRouter interface {
+	Handle(request Request) //处理conn业务的方法
+}

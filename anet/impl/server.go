@@ -223,6 +223,12 @@ func (s *Server) AddRouter(msgID uint32, router anet.Router) {
 	s.msgHandler.AddRouter(msgID, router)
 }
 
+
+//AddRouter 路由功能：给当前服务注册一个路由业务方法，供客户端链接处理使用
+func (s *Server) SetRpcxRouter(router anet.RpcxRouter) {
+	s.msgHandler.SetRpcxRouter(router)
+}
+
 //GetConnMgr 得到链接管理
 func (s *Server) GetConnMgr() anet.ConnManager {
 	return s.ConnMgr

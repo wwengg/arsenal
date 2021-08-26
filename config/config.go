@@ -15,6 +15,8 @@ type Config struct {
 	Rpcx      conf.Rpcx      `mapstructure:"rpcx" json:"rpcx" yaml:"rpcx"`
 	EtcdV3    conf.EtcdV3    `mapstructure:"etcd-v3" json:"etcdV3" yaml:"etcd-v3"`
 	Websocket conf.Websocket `mapstructure:"websocket" json:"websocket" yaml:"websocket"`
+	Redis     conf.Redis     `mapstructure:"redis" json:"redis" yaml:"redis"`
+	RpcxRouterMap	map[uint32]conf.RpcxRouter `mapstructure:"rpcx-router-map" json:"rpcxRouterMap" yaml:"rpcx-router-map"`
 }
 
 var ConfigHub *Config
@@ -61,5 +63,12 @@ func init() {
 			ConnReadTimeout:  0,
 			MaxHeaderLen:     0,
 		},
+		Redis: conf.Redis{
+			Addr:       []string{"127.0.0.1:6379"},
+			Db:         0,
+			Password:   "",
+			MasterName: "",
+		},
+		RpcxRouterMap: make(map[uint32]conf.RpcxRouter),
 	}
 }

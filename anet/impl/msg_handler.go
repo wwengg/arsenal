@@ -14,8 +14,9 @@ import (
 
 type MsgHandle struct {
 	Apis           map[uint32]anet.Router //存放每个MsgID 所对应的处理方法的map属性
-	WorkerPoolSize uint32                 //业务工作Worker池的数量
-	TaskQueue      []chan anet.Request    //Worker负责取任务的消息队列
+	Rpcx           anet.RpcxRouter
+	WorkerPoolSize uint32              //业务工作Worker池的数量
+	TaskQueue      []chan anet.Request //Worker负责取任务的消息队列
 }
 
 //NewMsgHandle 创建MsgHandle
@@ -45,6 +46,9 @@ func (mh *MsgHandle) DoMsgHandler(request anet.Request) {
 	handler, ok := mh.Apis[request.GetMsgID()]
 	if !ok {
 		fmt.Println("api msgID = ", request.GetMsgID(), " is not FOUND!")
+		if mh.Rpcx != nil {
+			mh.Rpcx.Handle(request)
+		}
 		return
 	}
 
@@ -63,6 +67,11 @@ func (mh *MsgHandle) AddRouter(msgID uint32, router anet.Router) {
 	//2 添加msg与api的绑定关系
 	mh.Apis[msgID] = router
 	fmt.Println("Add api msgID = ", msgID)
+}
+
+//SetRpcxRouter 为消息添加Rpcx处理逻辑
+func (mh *MsgHandle) SetRpcxRouter(router anet.RpcxRouter) {
+	mh.Rpcx = router
 }
 
 //StartOneWorker 启动一个Worker工作流程

@@ -23,3 +23,10 @@ func (br *BaseRouter) Handle(req anet.Request) {}
 
 //PostHandle -
 func (br *BaseRouter) PostHandle(req anet.Request) {}
+
+// RpcxRouter
+type RpcxRouter struct {
+}
+
+//Handle -
+func (br *RpcxRouter) Handle(req anet.Request) {}
