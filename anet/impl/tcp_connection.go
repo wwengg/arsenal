@@ -12,8 +12,6 @@ import (
 	"net"
 	"sync"
 
-	"github.com/gorilla/websocket"
-
 	"github.com/wwengg/arsenal/anet"
 	"github.com/wwengg/arsenal/config"
 )
@@ -191,15 +189,15 @@ func (c *TcpConnection) Stop() {
 
 }
 
-//GetTCPConnection 从当前连接获取原始的socket TCPConn
-func (c *TcpConnection) GetTcpConnection() *net.TCPConn {
-	return c.Conn
-}
-
-//GetTCPConnection 从当前连接获取原始的socket TCPConn
-func (c *TcpConnection) GetWsConnection() *websocket.Conn {
-	return nil
-}
+////GetTCPConnection 从当前连接获取原始的socket TCPConn
+//func (c *TcpConnection) GetTcpConnection() *net.TCPConn {
+//	return c.Conn
+//}
+//
+////GetTCPConnection 从当前连接获取原始的socket TCPConn
+//func (c *TcpConnection) GetWsConnection() *websocket.Conn {
+//	return nil
+//}
 
 //GetConnID 获取当前连接ID
 func (c *TcpConnection) GetConnID() uint64 {

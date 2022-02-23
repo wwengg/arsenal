@@ -202,15 +202,15 @@ func (c *WsConnection) Stop() {
 
 }
 
-//GetTCPConnection 从当前连接获取原始的socket TCPConn
-func (c *WsConnection) GetTcpConnection() *net.TCPConn {
-	return nil
-}
-
-//GetTCPConnection 从当前连接获取原始的socket TCPConn
-func (c *WsConnection) GetWsConnection() *websocket.Conn {
-	return c.Conn
-}
+////GetTCPConnection 从当前连接获取原始的socket TCPConn
+//func (c *WsConnection) GetTcpConnection() *net.TCPConn {
+//	return nil
+//}
+//
+////GetTCPConnection 从当前连接获取原始的socket TCPConn
+//func (c *WsConnection) GetWsConnection() *websocket.Conn {
+//	return c.Conn
+//}
 
 //GetConnID 获取当前连接ID
 func (c *WsConnection) GetConnID() uint64 {

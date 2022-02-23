@@ -9,14 +9,17 @@ import (
 )
 
 type Config struct {
-	JWT       conf.JWT       `mapstructure:"jwt" json:"jwt" yaml:"jwt"`                     // jwt
-	Zap       conf.Zap       `mapstructure:"zap" json:"zap" yaml:"zap"`                     // logger
-	TcpConfig conf.TcpConfig `mapstructure:"tcp-config" json:"tcpConfig" yaml:"tcp-config"` // logger
-	Rpcx      conf.Rpcx      `mapstructure:"rpcx" json:"rpcx" yaml:"rpcx"`
-	EtcdV3    conf.EtcdV3    `mapstructure:"etcd-v3" json:"etcdV3" yaml:"etcd-v3"`
-	Websocket conf.Websocket `mapstructure:"websocket" json:"websocket" yaml:"websocket"`
-	Redis     conf.Redis     `mapstructure:"redis" json:"redis" yaml:"redis"`
-	RpcxRouterMap	map[uint32]conf.RpcxRouter `mapstructure:"rpcx-router-map" json:"rpcxRouterMap" yaml:"rpcx-router-map"`
+	JWT           conf.JWT                   `mapstructure:"jwt" json:"jwt" yaml:"jwt"`                     // jwt
+	Zap           conf.Zap                   `mapstructure:"zap" json:"zap" yaml:"zap"`                     // logger
+	TcpConfig     conf.TcpConfig             `mapstructure:"tcp-config" json:"tcpConfig" yaml:"tcp-config"` // logger
+	Rpcx          conf.Rpcx                  `mapstructure:"rpcx" json:"rpcx" yaml:"rpcx"`
+	EtcdV3        conf.EtcdV3                `mapstructure:"etcd-v3" json:"etcdV3" yaml:"etcd-v3"`
+	Websocket     conf.Websocket             `mapstructure:"websocket" json:"websocket" yaml:"websocket"`
+	Redis         conf.Redis                 `mapstructure:"redis" json:"redis" yaml:"redis"`
+	RpcxRouterMap map[uint32]conf.RpcxRouter `mapstructure:"rpcx-router-map" json:"rpcxRouterMap" yaml:"rpcx-router-map"`
+
+	// rainbow
+	HttpGateway conf.HttpGateway `mapstructure:"http-gateway" json:"httpGateway" yaml:"http-gateway"`
 }
 
 var ConfigHub *Config
@@ -70,5 +73,9 @@ func init() {
 			MasterName: "",
 		},
 		RpcxRouterMap: make(map[uint32]conf.RpcxRouter),
+		HttpGateway: conf.HttpGateway{
+			Env:  "dev",
+			Addr: 8888,
+		},
 	}
 }

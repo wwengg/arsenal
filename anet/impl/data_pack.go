@@ -75,7 +75,7 @@ func (dp *DataPack) Unpack(binaryData []byte) (anet.Message, error) {
 		return nil, err
 	}
 
-	//读msgID
+	//读op
 	if err := binary.Read(dataBuff, binary.LittleEndian, &msg.Op); err != nil {
 		return nil, err
 	}
