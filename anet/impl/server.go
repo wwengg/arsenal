@@ -191,10 +191,6 @@ func (h *WsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (s *Server) httpServe() {
-
-}
-
 //Stop 停止服务
 func (s *Server) Stop() {
 	fmt.Println("[STOP] server , name ", s.Name)
@@ -222,7 +218,6 @@ func (s *Server) Serve() {
 func (s *Server) AddRouter(msgID uint32, router anet.Router) {
 	s.msgHandler.AddRouter(msgID, router)
 }
-
 
 //AddRouter 路由功能：给当前服务注册一个路由业务方法，供客户端链接处理使用
 func (s *Server) SetRpcxRouter(router anet.RpcxRouter) {
