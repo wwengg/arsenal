@@ -20,6 +20,9 @@ type Config struct {
 
 	// rainbow
 	HttpGateway conf.HttpGateway `mapstructure:"http-gateway" json:"httpGateway" yaml:"http-gateway"`
+
+	Mysql  conf.Mysql `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
+	DBList []conf.DB  `mapstructure:"db-list" json:"db-list" yaml:"db-list"`
 }
 
 var ConfigHub *Config
