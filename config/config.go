@@ -23,6 +23,9 @@ type Config struct {
 
 	Mysql  conf.Mysql `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
 	DBList []conf.DB  `mapstructure:"db-list" json:"db-list" yaml:"db-list"`
+
+	// upms
+	Captcha conf.Captcha `mapstructure:"captcha" json:"captcha" yaml:"captcha"`
 }
 
 var ConfigHub *Config
