@@ -38,3 +38,7 @@ func (s *RpcxServer) Serve() {
 	logger.ZapLog.Info("rpcxServer Start", zap.String("addr", config.ConfigHub.Rpcx.Addr))
 	s.rpcxServer.Serve(config.ConfigHub.Rpcx.Network, config.ConfigHub.Rpcx.Addr)
 }
+
+func (s *RpcxServer) GetServer() *server.Server {
+	return s.rpcxServer
+}
