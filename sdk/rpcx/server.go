@@ -16,6 +16,7 @@ import (
 type Server interface {
 	RegisterName(name string, rcvr interface{}, metadata string)
 	Serve()
+	GetServer() *server.Server
 }
 
 type RpcxServer struct {
