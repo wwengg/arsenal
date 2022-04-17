@@ -5,6 +5,8 @@
 package config
 
 import (
+	"gorm.io/gorm"
+
 	"github.com/wwengg/arsenal/config/conf"
 )
 
@@ -21,8 +23,8 @@ type Config struct {
 	// rainbow
 	HttpGateway conf.HttpGateway `mapstructure:"http-gateway" json:"httpGateway" yaml:"http-gateway"`
 
-	Mysql  conf.Mysql `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
-	DBList []conf.DB  `mapstructure:"db-list" json:"db-list" yaml:"db-list"`
+	Mysql  *gorm.DB `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
+	DBList []*gorm.DB  `mapstructure:"db-list" json:"db-list" yaml:"db-list"`
 
 	// upms
 	Captcha conf.Captcha `mapstructure:"captcha" json:"captcha" yaml:"captcha"`
