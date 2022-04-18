@@ -5,6 +5,7 @@ go 1.15
 require (
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/go-sql-driver/mysql v1.5.0 // indirect
 	github.com/gorilla/websocket v1.4.2
 	github.com/jonboulle/clockwork v0.2.2 // indirect
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
@@ -17,8 +18,8 @@ require (
 	go.uber.org/zap v1.19.0
 	google.golang.org/genproto v0.0.0-20200806141610-86f49bd18e98 // indirect
 	google.golang.org/grpc v1.36.0 // indirect
-	gorm.io/gorm v1.23.4
-	gorm.io/driver/mysql v1.2.3
+	gorm.io/driver/mysql v1.0.1
+	gorm.io/gorm v1.22.5
 )
 
 // replace github.com/wwengg/proto => ../proto
