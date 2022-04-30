@@ -20,6 +20,10 @@ type Connection interface {
 	ConnClose()           // 关闭socket连接
 	RemoteAddr() net.Addr //获取远程客户端地址信息
 
+	StartWriter()
+	StartReader()
+
+
 	//GetTcpConnection() *net.TCPConn   //从当前连接获取原始的socket TCPConn
 	//GetWsConnection() *websocket.Conn // 从当前连接获取原始的websocket Conn
 	GetConnID() uint64 //获取当前连接ID

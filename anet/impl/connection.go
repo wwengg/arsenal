@@ -9,14 +9,13 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"net"
 	"sync"
 
 	"github.com/wwengg/arsenal/anet"
 	"github.com/wwengg/arsenal/config"
 )
 
-type BaseConnection struct {
+type Connection struct {
 	//当前Conn属于哪个Server
 	TCPServer anet.Server
 	//当前连接的socket TCP套接字
@@ -40,32 +39,33 @@ type BaseConnection struct {
 	propertyLock sync.Mutex
 	//当前连接的关闭状态
 	isClosed bool
+
+	anet.Protocol
 }
 
 //NewConnection 创建连接的方法
+func NewConnection(server anet.Server, connID uint64, msgHandler anet.MsgHandle, protocol anet.Protocol) anet.Connection {
+	//初始化Conn属性
+	c := &Connection{
+		TCPServer:   server,
+		ConnID:      connID,
+		isClosed:    false,
+		MsgHandler:  msgHandler,
+		msgChan:     make(chan []byte),
+		msgBuffChan: make(chan []byte, config.ConfigHub.TcpConfig.MaxMsgChanLen),
+		property:    nil,
+		Protocol:    protocol,
 
-//Write 写消息Goroutine， 用户将数据发送给客户端
-func (c *BaseConnection) Write(data []byte) error {
-	return nil
+	}
+
+	//将新创建的Conn添加到链接管理中
+	c.TCPServer.GetConnMgr().Add(c)
+	return c
 }
 
-//GetReader 读消息Goroutine，用于从客户端中读取数据
-func (c *BaseConnection) GetReader() (r io.Reader, err error) {
-	return nil, nil
-}
-
-// 关闭socket链接
-func (c *BaseConnection) ConnClose() {
-
-}
-
-//RemoteAddr 获取远程客户端地址信息
-func (c *BaseConnection) RemoteAddr() net.Addr {
-	return nil
-}
 
 //StartWriter 写消息Goroutine， 用户将数据发送给客户端
-func (c *BaseConnection) StartWriter() {
+func (c *Connection) StartWriter() {
 	fmt.Println("[Writer Goroutine is running]")
 	defer fmt.Println(c.RemoteAddr().String(), "[conn Writer exit!]")
 
@@ -96,7 +96,7 @@ func (c *BaseConnection) StartWriter() {
 }
 
 //StartReader 读消息Goroutine，用于从客户端中读取数据
-func (c *BaseConnection) StartReader() {
+func (c *Connection) StartReader() {
 	fmt.Println("[Reader Goroutine is running]")
 	defer fmt.Println(c.RemoteAddr().String(), "[conn Reader exit!]")
 	defer c.Stop()
@@ -152,7 +152,7 @@ func (c *BaseConnection) StartReader() {
 }
 
 //Start 启动连接，让当前连接开始工作
-func (c *BaseConnection) Start() {
+func (c *Connection) Start() {
 	c.ctx, c.cancel = context.WithCancel(context.Background())
 	//1 开启用户从客户端读取数据流程的Goroutine
 	go c.StartReader()
@@ -163,7 +163,7 @@ func (c *BaseConnection) Start() {
 }
 
 //Stop 停止连接，结束当前连接状态M
-func (c *BaseConnection) Stop() {
+func (c *Connection) Stop() {
 	//如果用户注册了该链接的关闭回调业务，那么在此刻应该显示调用
 	c.TCPServer.CallOnConnStop(c)
 
@@ -193,12 +193,12 @@ func (c *BaseConnection) Stop() {
 }
 
 //GetConnID 获取当前连接ID
-func (c *BaseConnection) GetConnID() uint64 {
+func (c *Connection) GetConnID() uint64 {
 	return c.ConnID
 }
 
 //SendMsg 直接将Message数据发送数据给远程的TCP客户端
-func (c *BaseConnection) SendMsg(msgID uint32, data []byte) error {
+func (c *Connection) SendMsg(msgID uint32, data []byte) error {
 	c.RLock()
 	defer c.RUnlock()
 	if c.isClosed == true {
@@ -220,7 +220,7 @@ func (c *BaseConnection) SendMsg(msgID uint32, data []byte) error {
 }
 
 //SendBuffMsg  发生BuffMsg
-func (c *BaseConnection) SendBuffMsg(msgID uint32, data []byte) error {
+func (c *Connection) SendBuffMsg(msgID uint32, data []byte) error {
 	c.RLock()
 	defer c.RUnlock()
 	if c.isClosed == true {
@@ -242,7 +242,7 @@ func (c *BaseConnection) SendBuffMsg(msgID uint32, data []byte) error {
 }
 
 //SetProperty 设置链接属性
-func (c *BaseConnection) SetProperty(key string, value interface{}) {
+func (c *Connection) SetProperty(key string, value interface{}) {
 	c.propertyLock.Lock()
 	defer c.propertyLock.Unlock()
 	if c.property == nil {
@@ -253,7 +253,7 @@ func (c *BaseConnection) SetProperty(key string, value interface{}) {
 }
 
 //GetProperty 获取链接属性
-func (c *BaseConnection) GetProperty(key string) (interface{}, error) {
+func (c *Connection) GetProperty(key string) (interface{}, error) {
 	c.propertyLock.Lock()
 	defer c.propertyLock.Unlock()
 
@@ -265,7 +265,7 @@ func (c *BaseConnection) GetProperty(key string) (interface{}, error) {
 }
 
 //RemoveProperty 移除链接属性
-func (c *BaseConnection) RemoveProperty(key string) {
+func (c *Connection) RemoveProperty(key string) {
 	c.propertyLock.Lock()
 	defer c.propertyLock.Unlock()
 
@@ -273,6 +273,6 @@ func (c *BaseConnection) RemoveProperty(key string) {
 }
 
 //返回ctx，用于用户自定义的go程获取连接退出状态
-func (c *BaseConnection) Context() context.Context {
+func (c *Connection) Context() context.Context {
 	return c.ctx
 }

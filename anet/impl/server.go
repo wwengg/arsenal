@@ -129,7 +129,7 @@ func (s *Server) StartTcp() {
 			}
 
 			//3.3 处理该新连接请求的 业务 方法， 此时应该有 handler 和 conn是绑定的
-			dealConn := NewConnection(s, conn, s.GenID(), s.msgHandler)
+			dealConn := NewConnection(s, s.GenID(), s.msgHandler,NewTcpProtocol(conn))
 
 			//3.4 启动当前链接的处理业务
 			go dealConn.Start()
@@ -184,7 +184,8 @@ func (h *WsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//3.3 处理该新连接请求的 业务 方法， 此时应该有 handler 和 conn是绑定的
-	dealConn := NewWsConnection(h.sv, conn, h.sv.GenID(), h.sv.msgHandler)
+
+	dealConn := NewConnection(h.sv, h.sv.GenID(), h.sv.msgHandler,NewWsProtocol(conn))
 
 	//3.4 启动当前链接的处理业务
 	go dealConn.Start()
