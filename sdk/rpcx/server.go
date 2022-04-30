@@ -36,7 +36,7 @@ func (s *RpcxServer) RegisterName(name string, rcvr interface{}, metadata string
 }
 
 func (s *RpcxServer) Serve() {
-	logger.ZapLog.Info("rpcxServer Start", zap.String("addr", config.ConfigHub.Rpcx.Addr))
+	logger.ZapLog.Info("rpcxServer Start", zap.String("addr", config.ConfigHub.Rpcx.Addr),zap.String("network",config.ConfigHub.Rpcx.Network))
 	s.rpcxServer.Serve(config.ConfigHub.Rpcx.Network, config.ConfigHub.Rpcx.Addr)
 }
 
