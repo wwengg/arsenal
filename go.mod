@@ -3,6 +3,7 @@ module github.com/wwengg/arsenal
 go 1.15
 
 require (
+	github.com/chanxuehong/wechat v0.0.0-20230222024006-36f0325263cd // indirect
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/gorilla/websocket v1.4.2

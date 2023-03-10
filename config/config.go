@@ -26,6 +26,16 @@ type Config struct {
 
 	// upms
 	Captcha conf.Captcha `mapstructure:"captcha" json:"captcha" yaml:"captcha"`
+
+	// oss
+	Local conf.Local `mapstructure:"local" json:"local" yaml:"local"`
+	Qiniu conf.Qiniu `mapstructure:"qiniu" json:"qiniu" yaml:"qiniu"`
+
+	//WebRTC
+	Turn conf.Turn `mapstructure:"turn" json:"turn" yaml:"turn"`
+
+	// Wechat MP
+	Wechat conf.WechatMp `mapstructure:"wechat" json:"wechat" yaml:"wechat"`
 }
 
 var ConfigHub *Config
